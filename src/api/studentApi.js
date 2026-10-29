@@ -2,20 +2,26 @@ import axios from 'axios';
 
 export const CONTAINERS = [
   {
+    id: 'c3',
+    name: 'Scaled Node 2 (StudentManagementSystemRSN)',
+    url: 'https://studentmanagementsystemrsn.onrender.com/api',
+    badge: '🚀 StudentManagementSystemRSN',
+  },
+  {
     id: 'c2',
-    name: 'Scaled Node (RiteshStudentMsystem)',
+    name: 'Scaled Node 1 (RiteshStudentMsystem)',
     url: 'https://riteshstudentmsystem.onrender.com/api',
-    badge: '⚡ RiteshStudentMsystem (Render)',
+    badge: '⚡ RiteshStudentMsystem',
   },
   {
     id: 'c1',
     name: 'Primary Node (student-backend)',
     url: 'https://student-backend-l4ip.onrender.com/api',
-    badge: '⚙️ student-backend (Render)',
+    badge: '⚙️ student-backend',
   },
 ];
 
-let activeContainer = CONTAINERS[0]; // Default to newly created RiteshStudentMsystem!
+let activeContainer = CONTAINERS[0]; // Default to newly created StudentManagementSystemRSN!
 
 const api = axios.create({
   baseURL: activeContainer.url,
