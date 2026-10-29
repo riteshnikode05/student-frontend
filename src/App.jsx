@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { studentApi } from './api/studentApi';
+import { studentApi, CONTAINERS, setActiveContainer, getActiveContainer } from './api/studentApi';
 import StudentForm from './components/StudentForm';
 import StudentList from './components/StudentList';
 import SearchBar from './components/SearchBar';
@@ -13,6 +13,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
+  const [currentContainerId, setCurrentContainerId] = useState(getActiveContainer().id);
 
   const showMessage = (text, type = 'success') => {
     setMessage({ text, type });
@@ -35,7 +36,13 @@ function App() {
     if (currentPage === 'student-data') {
       loadStudents();
     }
-  }, [currentPage]);
+  }, [currentPage, currentContainerId]);
+
+  const handleContainerSwitch = (newId) => {
+    const updated = setActiveContainer(newId);
+    setCurrentContainerId(updated.id);
+    showMessage(`⚡ Switched backend container to: ${updated.name}`, 'success');
+  };
 
   const handleCreate = async (student) => {
     try {
@@ -86,6 +93,8 @@ function App() {
     return depts.size;
   }, [students]);
 
+  const activeContainer = getActiveContainer();
+
   return (
     <div className="app">
       {/* Dynamic ambient glass glows */}
@@ -106,7 +115,7 @@ function App() {
           <div className="header-right">
             <div className="cloud-badge">
               <span className="pulse-dot"></span>
-              <span className="cloud-badge-text">3-Tier Cloud Live</span>
+              <span className="cloud-badge-text">2 Scaled Render Nodes Live</span>
             </div>
             {currentPage === 'student-data' ? (
               <button className="btn-nav" onClick={() => setCurrentPage('home')}>
@@ -133,7 +142,7 @@ function App() {
           <Home onNavigate={setCurrentPage} />
         ) : (
           <div className="portal-wrapper">
-            {/* Stats Overview Container */}
+            {/* Stats Overview Container with Container Scalability Switcher */}
             <div className="stats-overview-bar glass-card">
               <div className="stat-card">
                 <span className="stat-icon">👥</span>
@@ -142,7 +151,9 @@ function App() {
                   <span className="stat-label">Total Registered</span>
                 </div>
               </div>
+
               <div className="stat-divider"></div>
+
               <div className="stat-card">
                 <span className="stat-icon">🏛️</span>
                 <div className="stat-info">
@@ -150,12 +161,28 @@ function App() {
                   <span className="stat-label">Departments</span>
                 </div>
               </div>
+
               <div className="stat-divider"></div>
-              <div className="stat-card">
-                <span className="stat-icon">⚡</span>
+
+              {/* Scalability Node Switcher */}
+              <div className="stat-card container-switch-card">
+                <span className="stat-icon">⚙️</span>
                 <div className="stat-info">
-                  <span className="stat-value status-online">Operational</span>
-                  <span className="stat-label">Render API Connected</span>
+                  <select 
+                    value={currentContainerId} 
+                    onChange={(e) => handleContainerSwitch(e.target.value)}
+                    className="container-dropdown"
+                    title="Switch active scalable backend container on Render"
+                  >
+                    {CONTAINERS.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="stat-label">
+                    Connected Node: <strong style={{ color: '#34d399' }}>{activeContainer.name}</strong>
+                  </span>
                 </div>
               </div>
             </div>
@@ -174,7 +201,7 @@ function App() {
                 {loading ? (
                   <div className="loading">
                     <div className="spinner"></div>
-                    <span>Querying MongoDB Atlas via Render...</span>
+                    <span>Querying MongoDB Atlas via {activeContainer.name}...</span>
                   </div>
                 ) : (
                   <StudentList students={filteredStudents} onEdit={setEditingStudent} onDelete={handleDelete} />
@@ -193,7 +220,7 @@ function App() {
         <div className="footer-divider">•</div>
         <div className="footer-status-pill">
           <span className="pulse-dot green"></span>
-          <span><strong>Backend API:</strong> Render</span>
+          <span><strong>Render Nodes:</strong> Primary + RiteshStudentMsystem (2 Live)</span>
         </div>
         <div className="footer-divider">•</div>
         <div className="footer-status-pill">

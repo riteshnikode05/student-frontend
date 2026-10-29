@@ -1,11 +1,39 @@
 import axios from 'axios';
 
+export const CONTAINERS = [
+  {
+    id: 'c2',
+    name: 'Scaled Node (RiteshStudentMsystem)',
+    url: 'https://riteshstudentmsystem.onrender.com/api',
+    badge: '⚡ RiteshStudentMsystem (Render)',
+  },
+  {
+    id: 'c1',
+    name: 'Primary Node (student-backend)',
+    url: 'https://student-backend-l4ip.onrender.com/api',
+    badge: '⚙️ student-backend (Render)',
+  },
+];
+
+let activeContainer = CONTAINERS[0]; // Default to newly created RiteshStudentMsystem!
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://student-backend-l4ip.onrender.com/api',
+  baseURL: activeContainer.url,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+export const setActiveContainer = (containerId) => {
+  const found = CONTAINERS.find((c) => c.id === containerId);
+  if (found) {
+    activeContainer = found;
+    api.defaults.baseURL = found.url;
+  }
+  return activeContainer;
+};
+
+export const getActiveContainer = () => activeContainer;
 
 api.interceptors.response.use(
   (response) => response,
@@ -33,6 +61,10 @@ export const studentApi = {
   },
   delete: async (id) => {
     const { data } = await api.delete(`/students/${id}`);
+    return data;
+  },
+  getSystemInfo: async () => {
+    const { data } = await api.get('/system-info');
     return data;
   },
 };
