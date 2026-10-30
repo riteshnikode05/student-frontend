@@ -115,7 +115,7 @@ function App() {
           <div className="header-right">
             <div className="cloud-badge">
               <span className="pulse-dot"></span>
-              <span className="cloud-badge-text">3 Scaled Render Nodes Live</span>
+              <span className="cloud-badge-text">4 Scaled Render Nodes Live</span>
             </div>
             {currentPage === 'student-data' ? (
               <button className="btn-nav" onClick={() => setCurrentPage('home')}>
@@ -220,7 +220,7 @@ function App() {
         <div className="footer-divider">•</div>
         <div className="footer-status-pill">
           <span className="pulse-dot green"></span>
-          <span><strong>Render Nodes:</strong> 3 Containers Active (StudentManagementSystemRSN • RiteshStudentMsystem • Primary)</span>
+          <span><strong>Render Nodes:</strong> 4 Containers Active (RiteshBIT • StudentManagementSystemRSN • RiteshStudentMsystem • Primary)</span>
         </div>
         <div className="footer-divider">•</div>
         <div className="footer-status-pill">

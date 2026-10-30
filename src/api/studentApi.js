@@ -2,6 +2,12 @@ import axios from 'axios';
 
 export const CONTAINERS = [
   {
+    id: 'c4',
+    name: 'Scaled Node 3 (RiteshBIT)',
+    url: 'https://riteshbit.onrender.com/api',
+    badge: '⚡ RiteshBIT',
+  },
+  {
     id: 'c3',
     name: 'Scaled Node 2 (StudentManagementSystemRSN)',
     url: 'https://studentmanagementsystemrsn.onrender.com/api',
@@ -21,7 +27,7 @@ export const CONTAINERS = [
   },
 ];
 
-let activeContainer = CONTAINERS[0]; // Default to newly created StudentManagementSystemRSN!
+let activeContainer = CONTAINERS[0]; // Default to newly created RiteshBIT!
 
 const api = axios.create({
   baseURL: activeContainer.url,
